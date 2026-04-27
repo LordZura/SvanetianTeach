@@ -1,35 +1,36 @@
+import { ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { theme } from '@/constants/theme';
 
-type LessonCardProps = {
+type FormCardProps = {
   title: string;
-  subtitle: string;
+  children: ReactNode;
 };
 
-export default function LessonCard({ title, subtitle }: LessonCardProps) {
+export default function FormCard({ title, children }: FormCardProps) {
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{title}</Text>
-      <Text style={styles.subtitle}>{subtitle}</Text>
+      {children}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
+    width: '100%',
+    maxWidth: 320,
+    borderRadius: 30,
+    paddingHorizontal: 24,
+    paddingVertical: 20,
     backgroundColor: theme.card,
-    borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingVertical: 18,
-    gap: 8,
+    gap: 14,
   },
   title: {
     color: theme.text,
-    fontSize: 18,
+    textAlign: 'center',
     fontWeight: '700',
-  },
-  subtitle: {
-    color: theme.mutedText,
-    fontSize: 14,
+    fontSize: 26,
+    marginBottom: 8,
   },
 });
