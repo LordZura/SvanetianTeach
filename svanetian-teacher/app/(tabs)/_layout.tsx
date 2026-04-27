@@ -1,75 +1,110 @@
-import { Ionicons } from '@expo/vector-icons';
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Tabs } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
-import { theme } from '@/constants/theme';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { layout } from '@/constants/layout';
+import { colors, radius } from '@/constants/theme';
+import AppIcon from '@/components/AppIcon';
 
-const iconMap = {
-  lexicon: 'book-outline',
-  index: 'chatbubble-outline',
-  profile: 'person-outline',
-  lessons: 'reader-outline',
-  submit: 'create-outline',
+const tabIconMap = {
+  lexicon: 'book',
+  index: 'chat',
+  profile: 'profile',
 } as const;
 
-type IconName = keyof typeof iconMap;
+function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
+  const insets = useSafeAreaInsets();
+  const bottom = Math.max(10, insets.bottom + 8);
+
+  return (
+    <View pointerEvents="box-none" style={[styles.outer, { bottom }]}> 
+      <View style={styles.pill}>
+        {state.routes.map((route, index) => {
+          const key = route.name as keyof typeof tabIconMap;
+
+          if (!tabIconMap[key]) {
+            return null;
+          }
+
+          const focused = state.index === index;
+          const { options } = descriptors[route.key];
+
+          const onPress = () => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+              canPreventDefault: true,
+            });
+
+            if (!focused && !event.defaultPrevented) {
+              navigation.navigate(route.name, route.params);
+            }
+          };
+
+          return (
+            <Pressable
+              key={route.key}
+              accessibilityRole="button"
+              accessibilityState={focused ? { selected: true } : {}}
+              accessibilityLabel={options.tabBarAccessibilityLabel}
+              onPress={onPress}
+              hitSlop={8}
+              style={({ pressed }) => [styles.tabItem, pressed && styles.tabPressed]}
+            >
+              <View style={[styles.iconWrap, focused && styles.iconWrapFocused]}>
+                <AppIcon
+                  name={tabIconMap[key]}
+                  size={focused ? 23 : 21}
+                  active={focused}
+                  tintColor={focused ? undefined : colors.mutedText}
+                />
+              </View>
+            </Pressable>
+          );
+        })}
+      </View>
+      <AppIcon name="chevronDown" size={18} tintColor={colors.text} style={styles.chevron} />
+    </View>
+  );
+}
 
 export default function TabLayout() {
   return (
-    <Tabs
-      screenOptions={({ route }) => ({
-        headerShown: false,
-        tabBarShowLabel: false,
-        tabBarStyle: styles.tabBar,
-        tabBarItemStyle: styles.tabItem,
-        tabBarIcon: ({ focused }) => {
-          const key = route.name as IconName;
-          const icon = iconMap[key] ?? 'ellipse-outline';
-          return (
-            <View style={[styles.iconWrap, focused && styles.iconWrapFocused]}>
-              <Ionicons
-                name={icon}
-                size={22}
-                color={focused ? theme.text : '#B7C4D2'}
-              />
-            </View>
-          );
-        },
-        tabBarBackground: () => (
-          <View style={styles.backgroundExtra}>
-            <Text style={styles.chevron}>⌄</Text>
-          </View>
-        ),
-      })}
-    >
+    <Tabs screenOptions={{ headerShown: false }} tabBar={(props) => <CustomTabBar {...props} />}>
       <Tabs.Screen name="lexicon" />
       <Tabs.Screen name="index" />
       <Tabs.Screen name="profile" />
-      <Tabs.Screen
-        name="lessons"
-        options={{ href: null }}
-      />
-      <Tabs.Screen
-        name="submit"
-        options={{ href: null }}
-      />
+      <Tabs.Screen name="lessons" options={{ href: null }} />
+      <Tabs.Screen name="submit" options={{ href: null }} />
     </Tabs>
   );
 }
 
 const styles = StyleSheet.create({
-  tabBar: {
+  outer: {
     position: 'absolute',
-    left: 24,
-    right: 24,
-    bottom: 42,
-    height: 52,
-    borderRadius: 999,
-    backgroundColor: theme.nav,
-    borderTopWidth: 0,
-    elevation: 0,
+    width: '100%',
+    alignItems: 'center',
+  },
+  pill: {
+    width: layout.tabBarWidth,
+    height: layout.tabBarHeight,
+    borderRadius: radius.pill,
+    backgroundColor: colors.nav,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    overflow: 'visible',
   },
   tabItem: {
-    marginTop: 2,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'visible',
+  },
+  tabPressed: {
+    opacity: 0.88,
+    transform: [{ scale: 0.98 }],
   },
   iconWrap: {
     width: 34,
@@ -79,24 +114,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   iconWrapFocused: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    marginTop: -18,
-    backgroundColor: theme.accent,
-    borderColor: '#D8DEE8',
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    marginTop: -20,
+    backgroundColor: colors.accent,
     borderWidth: 2,
-  },
-  backgroundExtra: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    borderColor: colors.border,
   },
   chevron: {
-    position: 'absolute',
-    bottom: -22,
-    fontSize: 28,
-    color: theme.text,
-    opacity: 0.9,
+    marginTop: 6,
+    opacity: 0.95,
   },
 });

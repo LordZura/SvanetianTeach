@@ -1,37 +1,21 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { StyleSheet, Text, View } from 'react-native';
-import { theme } from '@/constants/theme';
+import { Image, ImageStyle, StyleProp, View, ViewStyle } from 'react-native';
 
 type AppLogoProps = {
+  size?: number;
   compact?: boolean;
+  style?: StyleProp<ImageStyle | ViewStyle>;
 };
 
-export default function AppLogo({ compact = false }: AppLogoProps) {
+export default function AppLogo({ size, compact = false, style }: AppLogoProps) {
+  const resolvedSize = size ?? (compact ? 48 : 58);
+
   return (
-    <View style={[styles.container, compact && styles.compactContainer]}>
-      <MaterialCommunityIcons
-        name="castle"
-        size={compact ? 34 : 46}
-        color={theme.accent}
+    <View style={style}>
+      <Image
+        source={require('@/assets/ui/logo.png')}
+        resizeMode="contain"
+        style={{ width: resolvedSize, height: resolvedSize }}
       />
-      {!compact && <Text style={styles.badge}>SV</Text>}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  compactContainer: {
-    alignItems: 'flex-start',
-  },
-  badge: {
-    marginTop: -7,
-    fontSize: 9,
-    fontWeight: '700',
-    letterSpacing: 1,
-    color: theme.accent,
-  },
-});

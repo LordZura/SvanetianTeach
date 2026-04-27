@@ -5,36 +5,40 @@ import AppInput from '@/components/AppInput';
 import AppLogo from '@/components/AppLogo';
 import FormCard from '@/components/FormCard';
 import Screen from '@/components/Screen';
+import { spacing } from '@/constants/theme';
 
 export default function RegisterScreen() {
   return (
-    <Screen>
-      <View style={styles.container}>
-        <AppLogo />
-        <FormCard title="რეგისტრაცია">
-          <AppInput placeholder="სახელი" />
-          <AppInput placeholder="ელფოსტა" keyboardType="email-address" />
-          <AppInput placeholder="პაროლი" secureTextEntry />
-          <AppInput placeholder="გაიმეორე პაროლი" secureTextEntry />
-          <View style={styles.buttonWrap}>
-            <AppButton title="რეგისტრაცია" compact onPress={() => router.back()} />
-          </View>
-        </FormCard>
+    <Screen scroll keyboardAware contentStyle={styles.container}>
+      <View style={styles.logoWrap}>
+        <AppLogo size={58} />
       </View>
+
+      <FormCard title="რეგისტრაცია">
+        <AppInput placeholder="სახელი" />
+        <AppInput placeholder="ელფოსტა" keyboardType="email-address" autoCapitalize="none" />
+        <AppInput placeholder="პაროლი" secureTextEntry />
+        <AppInput placeholder="გაიმეორე პაროლი" secureTextEntry />
+        <View style={styles.buttonWrap}>
+          <AppButton title="რეგისტრაცია" onPress={() => router.back()} compact />
+        </View>
+      </FormCard>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 20,
-    gap: 24,
+    gap: spacing.lg,
+    paddingVertical: 24,
+  },
+  logoWrap: {
+    marginTop: 8,
   },
   buttonWrap: {
-    marginTop: 8,
+    marginTop: spacing.sm,
     alignItems: 'center',
   },
 });

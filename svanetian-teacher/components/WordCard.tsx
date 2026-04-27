@@ -1,7 +1,8 @@
-import { Ionicons } from '@expo/vector-icons';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { theme } from '@/constants/theme';
+import { Pressable, StyleSheet, Text } from 'react-native';
+import { layout } from '@/constants/layout';
+import { colors, radius } from '@/constants/theme';
 import type { Word } from '@/types/word';
+import AppIcon from './AppIcon';
 
 type WordCardProps = {
   item: Word;
@@ -10,11 +11,12 @@ type WordCardProps = {
 
 export default function WordCard({ item, onPress }: WordCardProps) {
   return (
-    <Pressable style={styles.row} onPress={onPress}>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [styles.row, pressed && styles.pressed]}
+    >
       <Text style={styles.word}>{item.svan}</Text>
-      <View style={styles.middle}>
-        <Ionicons name="arrow-forward" size={18} color={theme.text} />
-      </View>
+      <AppIcon name="arrowRight" size={20} />
       <Text style={styles.translation}>{item.translation}</Text>
     </Pressable>
   );
@@ -22,27 +24,28 @@ export default function WordCard({ item, onPress }: WordCardProps) {
 
 const styles = StyleSheet.create({
   row: {
-    backgroundColor: theme.card,
-    borderRadius: 14,
+    backgroundColor: colors.panel,
+    borderRadius: radius.md,
     paddingHorizontal: 14,
-    height: 46,
+    height: layout.rowHeight,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  pressed: {
+    opacity: 0.9,
+    transform: [{ scale: 0.99 }],
   },
   word: {
-    flex: 1,
-    color: theme.text,
+    width: '40%',
+    color: colors.text,
     fontWeight: '600',
     fontSize: 13,
   },
-  middle: {
-    width: 32,
-    alignItems: 'center',
-  },
   translation: {
-    flex: 1,
+    width: '40%',
     textAlign: 'right',
-    color: theme.text,
+    color: colors.text,
     fontWeight: '600',
     fontSize: 13,
   },

@@ -1,68 +1,78 @@
-import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet, Text, View } from 'react-native';
-import Screen from '@/components/Screen';
+import { router } from 'expo-router';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import AppIcon from '@/components/AppIcon';
 import AppLogo from '@/components/AppLogo';
-import { theme } from '@/constants/theme';
+import Screen from '@/components/Screen';
+import { layout } from '@/constants/layout';
+import { colors, radius } from '@/constants/theme';
 
 export default function HomeScreen() {
   return (
-    <Screen>
-      <View style={styles.container}>
-        <View style={styles.hero}>
-          <AppLogo />
-          <Text style={styles.title}>მე შენ ქართველო სწავლერს</Text>
-        </View>
-
-        <View style={styles.searchPill}>
-          <Text style={styles.searchText}>დაწერე აქაური...</Text>
-          <View style={styles.arrowBtn}>
-            <Ionicons name="arrow-forward" size={16} color={theme.nav} />
-          </View>
-        </View>
+    <Screen contentStyle={styles.container}>
+      <View style={styles.hero}>
+        <AppLogo size={58} />
+        <Text style={styles.title}>{'მე შენ გასწავლი\nსვანურს'}</Text>
       </View>
+
+      <Pressable
+        onPress={() => router.push('/lexicon')}
+        style={({ pressed }) => [styles.searchPill, pressed && styles.pressed]}
+      >
+        <Text style={styles.searchText}>დაწერე აქაური...</Text>
+        <View style={styles.arrowWrap}>
+          <AppIcon name="arrowRight" size={16} />
+        </View>
+      </Pressable>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingHorizontal: 30,
-    paddingBottom: 140,
+    paddingHorizontal: layout.horizontalPadding,
     justifyContent: 'space-between',
+    paddingBottom: layout.tabBarClearance,
   },
   hero: {
-    marginTop: '36%',
+    flex: 1,
     alignItems: 'center',
-    gap: 14,
+    justifyContent: 'center',
+    gap: 12,
+    marginTop: 20,
   },
   title: {
-    color: theme.text,
-    fontSize: 34,
+    color: colors.text,
+    fontSize: 40,
     textAlign: 'center',
-    lineHeight: 42,
-    fontWeight: '600',
-    maxWidth: 260,
+    lineHeight: 48,
+    fontWeight: '700',
+    maxWidth: 300,
   },
   searchPill: {
-    marginBottom: 20,
-    backgroundColor: theme.card,
-    borderRadius: 999,
-    height: 38,
+    alignSelf: 'center',
+    width: '96%',
+    maxWidth: 360,
+    backgroundColor: colors.card,
+    borderRadius: radius.pill,
+    height: 40,
     paddingHorizontal: 14,
+    marginBottom: 10,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  pressed: {
+    opacity: 0.9,
+    transform: [{ scale: 0.99 }],
   },
   searchText: {
     flex: 1,
     color: '#9EA4B0',
     fontSize: 13,
   },
-  arrowBtn: {
+  arrowWrap: {
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: '#6A6F79',
     alignItems: 'center',
     justifyContent: 'center',
   },

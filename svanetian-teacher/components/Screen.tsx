@@ -1,19 +1,71 @@
 import { ReactNode } from 'react';
-import { SafeAreaView, StyleSheet, ViewStyle } from 'react-native';
-import { theme } from '@/constants/theme';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors } from '@/constants/theme';
 
 type ScreenProps = {
   children: ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
+  contentStyle?: StyleProp<ViewStyle>;
+  scroll?: boolean;
+  keyboardAware?: boolean;
 };
 
-export default function Screen({ children, style }: ScreenProps) {
-  return <SafeAreaView style={[styles.container, style]}>{children}</SafeAreaView>;
+export default function Screen({
+  children,
+  style,
+  contentStyle,
+  scroll = false,
+  keyboardAware = false,
+}: ScreenProps) {
+  const body = scroll ? (
+    <ScrollView
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={[styles.scrollContent, contentStyle]}
+      showsVerticalScrollIndicator={false}
+    >
+      {children}
+    </ScrollView>
+  ) : (
+    <View style={[styles.content, contentStyle]}>{children}</View>
+  );
+
+  return (
+    <SafeAreaView edges={["top", "bottom"]} style={[styles.container, style]}>
+      {keyboardAware ? (
+        <KeyboardAvoidingView
+          style={styles.keyboardWrap}
+          behavior={Platform.select({ ios: 'padding', android: undefined })}
+        >
+          {body}
+        </KeyboardAvoidingView>
+      ) : (
+        body
+      )}
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.background,
+    backgroundColor: colors.background,
+  },
+  keyboardWrap: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
 });
