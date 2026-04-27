@@ -3,14 +3,14 @@ import { StyleSheet, View } from 'react-native';
 import AppButton from '@/components/AppButton';
 import AppLogo from '@/components/AppLogo';
 import Screen from '@/components/Screen';
-import { layout } from '@/constants/layout';
-import { colors, radius } from '@/constants/theme';
+import { layout, profileChoiceWidth } from '@/constants/layout';
+import { colors } from '@/constants/theme';
 
 export default function ProfileScreen() {
   return (
     <Screen contentStyle={styles.container}>
       <View style={styles.logoWrap}>
-        <AppLogo size={58} />
+        <AppLogo size={layout.logo.auth} />
       </View>
 
       <View style={styles.choiceCard}>
@@ -25,21 +25,20 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingBottom: layout.tabBarClearance,
-    paddingTop: 32,
+    paddingBottom: layout.screen.bottomNavSpace,
+    paddingTop: layout.profile.topGap,
   },
   logoWrap: {
-    marginTop: 26,
+    marginTop: layout.profile.logoTopGap,
   },
   choiceCard: {
-    width: Math.min(layout.screenWidth * 0.86, 360),
+    width: profileChoiceWidth,
     backgroundColor: colors.panel,
-    borderRadius: radius.xl,
-    paddingHorizontal: 18,
-    paddingVertical: 18,
+    borderRadius: layout.profile.choiceRadius,
+    paddingHorizontal: layout.profile.choicePaddingX,
+    paddingVertical: layout.profile.choicePaddingY,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 16,
-    marginBottom: 0,
+    gap: layout.profile.choiceGap,
   },
 });

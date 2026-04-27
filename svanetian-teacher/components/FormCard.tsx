@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
-import { layout } from '@/constants/layout';
-import { colors, spacing } from '@/constants/theme';
+import { formCardWidth, layout } from '@/constants/layout';
+import { colors } from '@/constants/theme';
 
 type FormCardProps = {
   title: string;
@@ -20,20 +20,20 @@ export default function FormCard({ title, children, style }: FormCardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    width: layout.authCardWidth,
-    maxWidth: 330,
-    borderRadius: 36,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.lg,
+    width: formCardWidth,
+    maxWidth: layout.forms.cardMaxWidth,
+    borderRadius: layout.forms.cardRadius,
+    paddingHorizontal: layout.forms.cardPaddingX,
+    paddingVertical: layout.forms.cardPaddingY,
     backgroundColor: colors.panel,
-    gap: spacing.md,
+    gap: layout.forms.inputGap,
     alignSelf: 'center',
   },
   title: {
-    color: colors.text,
+    color: colors.textPrimary,
     textAlign: 'center',
     fontWeight: '700',
-    fontSize: 27,
-    marginBottom: spacing.xs,
+    fontSize: layout.forms.titleFont,
+    marginBottom: layout.forms.titleBottomGap,
   },
 });

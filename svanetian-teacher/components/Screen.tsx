@@ -9,6 +9,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { layout } from '@/constants/layout';
 import { colors } from '@/constants/theme';
 
 type ScreenProps = {
@@ -39,7 +40,7 @@ export default function Screen({
   );
 
   return (
-    <SafeAreaView edges={["top", "bottom"]} style={[styles.container, style]}>
+    <SafeAreaView edges={['top', 'bottom']} style={[styles.container, style]}>
       {keyboardAware ? (
         <KeyboardAvoidingView
           style={styles.keyboardWrap}
@@ -64,8 +65,10 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    paddingHorizontal: layout.screen.paddingX,
   },
   scrollContent: {
     flexGrow: 1,
+    paddingHorizontal: layout.screen.paddingX,
   },
 });

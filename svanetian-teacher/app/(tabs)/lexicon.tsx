@@ -7,7 +7,7 @@ import AppLogo from '@/components/AppLogo';
 import Screen from '@/components/Screen';
 import WordCard from '@/components/WordCard';
 import { layout } from '@/constants/layout';
-import { colors } from '@/constants/theme';
+import { colors, pressed } from '@/constants/theme';
 import { MOCK_WORDS } from '@/types/word';
 
 export default function LexiconScreen() {
@@ -41,9 +41,9 @@ export default function LexiconScreen() {
 
         <Pressable
           onPress={() => setSearchOpen((prev) => !prev)}
-          style={({ pressed }) => [styles.searchIconWrap, pressed && styles.pressed]}
+          style={({ pressed: isPressed }) => [styles.searchIconWrap, isPressed && styles.pressed]}
         >
-          <AppIcon name="search" size={20} />
+          <AppIcon name="search" size={layout.header.searchIcon} />
         </Pressable>
       </View>
 
@@ -62,36 +62,35 @@ export default function LexiconScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: layout.horizontalPadding,
-    paddingTop: 8,
-    paddingBottom: layout.tabBarClearance,
+    paddingTop: layout.header.topGap,
+    paddingBottom: layout.screen.bottomNavSpace,
   },
   topRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
-    gap: 10,
+    marginBottom: layout.header.bottomGap,
+    gap: layout.header.rowGap,
   },
   searchInputWrap: {
     flex: 1,
-    maxWidth: 250,
+    maxWidth: layout.header.searchInputMaxWidth,
   },
   searchIconWrap: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: layout.header.searchCircle,
+    height: layout.header.searchCircle,
+    borderRadius: layout.header.searchCircle / 2,
     backgroundColor: colors.accent,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 2,
+    borderWidth: layout.header.searchBorderWidth,
     borderColor: colors.border,
   },
   pressed: {
-    opacity: 0.9,
-    transform: [{ scale: 0.97 }],
+    opacity: pressed.opacitySoft,
+    transform: [{ scale: pressed.scaleStrong }],
   },
   list: {
-    gap: 10,
-    paddingBottom: 24,
+    gap: layout.lexicon.rowGap,
+    paddingBottom: layout.lexicon.listBottomPadding,
   },
 });

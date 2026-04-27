@@ -1,6 +1,6 @@
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Image, ImageStyle, StyleProp } from 'react-native';
-import { colors } from '@/constants/theme';
+import { colors, pressed } from '@/constants/theme';
 
 type AppIconName =
   | 'book'
@@ -54,7 +54,7 @@ export default function AppIcon({
         <MaterialIcons
           name="keyboard-arrow-down"
           size={size}
-          color={tintColor ?? colors.text}
+          color={tintColor ?? colors.textPrimary}
           style={style}
         />
       );
@@ -64,7 +64,7 @@ export default function AppIcon({
       <Ionicons
         name={fallbackName[name]}
         size={size}
-        color={tintColor ?? (active ? colors.text : colors.mutedText)}
+        color={tintColor ?? (active ? colors.textPrimary : colors.textSecondary)}
         style={style}
       />
     );
@@ -79,7 +79,7 @@ export default function AppIcon({
           width: size,
           height: size,
           tintColor,
-          opacity: active ? 1 : 0.95,
+          opacity: active ? 1 : pressed.opacitySoft,
         },
         style,
       ]}

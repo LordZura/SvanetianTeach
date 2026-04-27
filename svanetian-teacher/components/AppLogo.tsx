@@ -1,4 +1,5 @@
 import { Image, ImageStyle, StyleProp, View, ViewStyle } from 'react-native';
+import { layout } from '@/constants/layout';
 
 type AppLogoProps = {
   size?: number;
@@ -7,7 +8,7 @@ type AppLogoProps = {
 };
 
 export default function AppLogo({ size, compact = false, style }: AppLogoProps) {
-  const resolvedSize = size ?? (compact ? 48 : 58);
+  const resolvedSize = size ?? (compact ? layout.logo.header : layout.logo.auth);
 
   return (
     <View style={style}>

@@ -12,17 +12,15 @@ const lessons = [
 
 export default function LessonsScreen() {
   return (
-    <Screen>
-      <View style={styles.container}>
-        <View style={styles.logo}>
-          <AppLogo compact />
-        </View>
-        <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
-          {lessons.map((lesson) => (
-            <LessonCard key={lesson.title} title={lesson.title} subtitle={lesson.subtitle} />
-          ))}
-        </ScrollView>
+    <Screen contentStyle={styles.container}>
+      <View style={styles.logo}>
+        <AppLogo compact />
       </View>
+      <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
+        {lessons.map((lesson) => (
+          <LessonCard key={lesson.title} title={lesson.title} subtitle={lesson.subtitle} />
+        ))}
+      </ScrollView>
     </Screen>
   );
 }
@@ -30,15 +28,14 @@ export default function LessonsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: layout.horizontalPadding,
     paddingTop: 10,
-    paddingBottom: layout.tabBarClearance,
+    paddingBottom: layout.screen.bottomNavSpace,
   },
   logo: {
-    marginBottom: 16,
+    marginBottom: layout.header.bottomGap,
   },
   list: {
-    gap: 12,
-    paddingBottom: 20,
+    gap: layout.lessons.listGap,
+    paddingBottom: layout.lessons.listBottomPadding,
   },
 });
