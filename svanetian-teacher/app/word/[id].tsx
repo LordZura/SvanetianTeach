@@ -1,42 +1,48 @@
-import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import AppIcon from '@/components/AppIcon';
 import AppLogo from '@/components/AppLogo';
 import Screen from '@/components/Screen';
-import { theme } from '@/constants/theme';
+import { layout } from '@/constants/layout';
+import { colors, radius } from '@/constants/theme';
 import { MOCK_WORDS } from '@/types/word';
 
 export default function WordDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const word = MOCK_WORDS.find((item) => item.id === id) ?? MOCK_WORDS[0];
+  const word = MOCK_WORDS.find((item) => item.id === id);
+  const activeWord = word ?? MOCK_WORDS[0];
 
   return (
-    <Screen>
-      <View style={styles.container}>
-        <View style={styles.topRow}>
-          <AppLogo compact />
-          <View style={styles.iconBtn}>
-            <Ionicons name="search-outline" size={20} color={theme.text} />
-          </View>
+    <Screen contentStyle={styles.container}>
+      <View style={styles.topRow}>
+        <AppLogo compact />
+        <Pressable onPress={() => console.log('search placeholder')} style={styles.iconBtn}>
+          <AppIcon name="search" size={19} />
+        </Pressable>
+      </View>
+
+      <View style={styles.card}>
+        {!word && <Text style={styles.fallback}>სიტყვა ვერ მოიძებნა. ნაჩვენებია დემო ჩანაწერი.</Text>}
+
+        <View style={styles.wordRow}>
+          <Text style={styles.word}>{activeWord.svan}</Text>
+          <View style={styles.verticalDivider} />
+          <Text style={styles.translation}>{activeWord.translation}</Text>
         </View>
 
-        <View style={styles.card}>
-          <View style={styles.wordRow}>
-            <Text style={styles.word}>{word.svan}</Text>
-            <View style={styles.verticalDivider} />
-            <Text style={styles.translation}>{word.translation}</Text>
-          </View>
+        <View style={styles.horizontalDivider} />
+        <Text style={styles.desc}>{activeWord.description}</Text>
+        <Text style={styles.bullets}>
+          {activeWord.examples && activeWord.examples.length > 0
+            ? `• ${activeWord.examples.join('\n• ')}`
+            : '• ...\n• ...\n• ...\n• ...'}
+        </Text>
 
-          <View style={styles.horizontalDivider} />
-          <Text style={styles.desc}>სიტყვის აღწერა, მნიშვნელობა, მაგალითები.</Text>
-          <Text style={styles.bullets}>·{"\n"}·{"\n"}·{"\n"}·{"\n"}·</Text>
-
-          <View style={styles.footerRow}>
-            <Text style={styles.footerText}>სიტყვის წარმოთქმა</Text>
-            <View style={styles.micBtn}>
-              <Ionicons name="mic-outline" size={16} color={theme.text} />
-            </View>
-          </View>
+        <View style={styles.footerRow}>
+          <Text style={styles.footerText}>სიტყვის წარმოთქმა</Text>
+          <Pressable onPress={() => console.log('mic placeholder', activeWord.id)} style={styles.micBtn}>
+            <AppIcon name="mic" size={15} />
+          </Pressable>
         </View>
       </View>
     </Screen>
@@ -45,71 +51,78 @@ export default function WordDetailScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 10,
-    paddingBottom: 120,
+    paddingHorizontal: layout.horizontalPadding,
+    paddingTop: 8,
+    paddingBottom: 24,
   },
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 16,
   },
   iconBtn: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    backgroundColor: theme.accent,
-    borderColor: theme.border,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: colors.accent,
+    borderColor: colors.border,
     borderWidth: 2,
     alignItems: 'center',
     justifyContent: 'center',
   },
   card: {
     flex: 1,
-    backgroundColor: theme.card,
-    borderRadius: 22,
+    backgroundColor: colors.panel,
+    borderRadius: 24,
     paddingHorizontal: 18,
     paddingVertical: 16,
+    minHeight: 430,
+  },
+  fallback: {
+    color: colors.mutedText,
+    fontSize: 12,
+    marginBottom: 6,
   },
   wordRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 44,
+    minHeight: 46,
   },
   word: {
     flex: 1,
-    color: theme.text,
+    color: colors.text,
     fontWeight: '700',
-    fontSize: 15,
+    fontSize: 14,
   },
   verticalDivider: {
-    width: 1,
-    height: 32,
-    backgroundColor: theme.border,
+    width: 2,
+    height: 33,
+    backgroundColor: colors.border,
+    marginHorizontal: 10,
   },
   translation: {
     flex: 1,
-    color: theme.text,
+    color: colors.text,
     textAlign: 'right',
     fontWeight: '700',
-    fontSize: 15,
+    fontSize: 14,
   },
   horizontalDivider: {
     marginTop: 8,
     marginBottom: 14,
     borderBottomWidth: 2,
-    borderBottomColor: theme.border,
+    borderBottomColor: colors.border,
   },
   desc: {
-    color: theme.text,
-    fontSize: 16,
+    color: colors.text,
+    fontSize: 15,
+    lineHeight: 23,
   },
   bullets: {
-    color: theme.text,
-    fontSize: 20,
-    lineHeight: 28,
+    color: colors.text,
+    fontSize: 18,
+    lineHeight: 30,
     marginTop: 8,
     flex: 1,
   },
@@ -119,15 +132,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   footerText: {
-    color: theme.text,
+    color: colors.text,
     fontSize: 13,
   },
   micBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 38,
+    height: 38,
+    borderRadius: radius.pill,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: theme.accent,
+    backgroundColor: colors.accent,
   },
 });

@@ -1,67 +1,97 @@
-import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useMemo, useState } from 'react';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
+import AppIcon from '@/components/AppIcon';
+import AppInput from '@/components/AppInput';
 import AppLogo from '@/components/AppLogo';
 import Screen from '@/components/Screen';
 import WordCard from '@/components/WordCard';
-import { theme } from '@/constants/theme';
+import { layout } from '@/constants/layout';
+import { colors } from '@/constants/theme';
 import { MOCK_WORDS } from '@/types/word';
 
 export default function LexiconScreen() {
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [query, setQuery] = useState('');
+
+  const filteredWords = useMemo(() => {
+    if (!query.trim()) {
+      return MOCK_WORDS;
+    }
+
+    const normalized = query.trim().toLowerCase();
+    return MOCK_WORDS.filter((word) =>
+      `${word.svan} ${word.georgian} ${word.translation}`.toLowerCase().includes(normalized),
+    );
+  }, [query]);
+
   return (
-    <Screen>
-      <View style={styles.container}>
-        <View style={styles.topRow}>
-          <AppLogo compact />
-          <View style={styles.searchIconWrap}>
-            <Ionicons name="search-outline" size={23} color={theme.text} />
-          </View>
-        </View>
+    <Screen contentStyle={styles.container}>
+      <View style={styles.topRow}>
+        <AppLogo compact />
 
-        <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
-          {MOCK_WORDS.map((item) => (
-            <WordCard key={item.id} item={item} onPress={() => router.push(`/word/${item.id}`)} />
-          ))}
-        </ScrollView>
+        {searchOpen && (
+          <AppInput
+            value={query}
+            onChangeText={setQuery}
+            placeholder="მოძებნე სიტყვა"
+            containerStyle={styles.searchInputWrap}
+          />
+        )}
 
-        <Text style={styles.upMarker}>⌃</Text>
+        <Pressable
+          onPress={() => setSearchOpen((prev) => !prev)}
+          style={({ pressed }) => [styles.searchIconWrap, pressed && styles.pressed]}
+        >
+          <AppIcon name="search" size={20} />
+        </Pressable>
       </View>
+
+      <FlatList
+        data={filteredWords}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.list}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <WordCard item={item} onPress={() => router.push(`/word/${item.id}`)} />
+        )}
+      />
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 10,
-    paddingBottom: 128,
+    paddingHorizontal: layout.horizontalPadding,
+    paddingTop: 8,
+    paddingBottom: layout.tabBarClearance,
   },
   topRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 18,
+    marginBottom: 16,
+    gap: 10,
+  },
+  searchInputWrap: {
+    flex: 1,
+    maxWidth: 250,
   },
   searchIconWrap: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: theme.accent,
+    backgroundColor: colors.accent,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 3,
-    borderColor: theme.border,
+    borderWidth: 2,
+    borderColor: colors.border,
+  },
+  pressed: {
+    opacity: 0.9,
+    transform: [{ scale: 0.97 }],
   },
   list: {
-    gap: 12,
-    paddingBottom: 30,
-  },
-  upMarker: {
-    position: 'absolute',
-    bottom: 100,
-    alignSelf: 'center',
-    color: theme.text,
-    fontSize: 18,
+    gap: 10,
+    paddingBottom: 24,
   },
 });

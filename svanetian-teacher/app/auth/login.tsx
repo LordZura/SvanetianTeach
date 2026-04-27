@@ -5,36 +5,40 @@ import AppInput from '@/components/AppInput';
 import AppLogo from '@/components/AppLogo';
 import FormCard from '@/components/FormCard';
 import Screen from '@/components/Screen';
+import { spacing } from '@/constants/theme';
 
 export default function LoginScreen() {
   return (
-    <Screen>
-      <View style={styles.container}>
-        <AppLogo />
-        <FormCard title="შესვლა">
-          <AppInput placeholder="ელფოსტა" keyboardType="email-address" />
-          <AppInput placeholder="პაროლი" secureTextEntry />
-          <AppInput placeholder="საიდენტიფიკაციო კოდი" />
-          <AppInput placeholder="მობილური ნომერი" keyboardType="phone-pad" />
-          <View style={styles.buttonWrap}>
-            <AppButton title="შესვლა" compact onPress={() => router.back()} />
-          </View>
-        </FormCard>
+    <Screen scroll keyboardAware contentStyle={styles.container}>
+      <View style={styles.logoWrap}>
+        <AppLogo size={58} />
       </View>
+
+      <FormCard title="შესვლა">
+        <AppInput placeholder="ელფოსტა" keyboardType="email-address" autoCapitalize="none" />
+        <AppInput placeholder="პაროლი" secureTextEntry />
+        <AppInput placeholder="მობილური ნომერი" keyboardType="phone-pad" />
+        <AppInput placeholder="ერთჯერადი კოდი" keyboardType="number-pad" />
+        <View style={styles.buttonWrap}>
+          <AppButton title="შესვლა" onPress={() => router.back()} compact />
+        </View>
+      </FormCard>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 20,
-    gap: 24,
+    gap: spacing.lg,
+    paddingVertical: 24,
+  },
+  logoWrap: {
+    marginTop: 8,
   },
   buttonWrap: {
-    marginTop: 8,
+    marginTop: spacing.sm,
     alignItems: 'center',
   },
 });

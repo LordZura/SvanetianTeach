@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { theme } from '@/constants/theme';
+import { colors } from '@/constants/theme';
 
 type LessonCardProps = {
   title: string;
@@ -17,19 +17,19 @@ export default function LessonCard({ title, subtitle }: LessonCardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: theme.card,
+    backgroundColor: colors.panel,
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 18,
     gap: 8,
   },
   title: {
-    color: theme.text,
+    color: colors.text,
     fontSize: 18,
     fontWeight: '700',
   },
   subtitle: {
-    color: theme.mutedText,
+    color: colors.mutedText,
     fontSize: 14,
   },
 });
