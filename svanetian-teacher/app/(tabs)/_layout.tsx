@@ -2,9 +2,9 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Tabs } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { layout } from '@/constants/layout';
-import { colors, radius } from '@/constants/theme';
 import AppIcon from '@/components/AppIcon';
+import { layout, tabBarWidth } from '@/constants/layout';
+import { colors, pressed } from '@/constants/theme';
 
 const tabIconMap = {
   lexicon: 'book',
@@ -14,7 +14,7 @@ const tabIconMap = {
 
 function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
-  const bottom = Math.max(10, insets.bottom + 8);
+  const bottom = Math.max(layout.tabs.bottomInsetMin, insets.bottom + layout.tabs.bottomInsetOffset);
 
   return (
     <View pointerEvents="box-none" style={[styles.outer, { bottom }]}> 
@@ -49,21 +49,26 @@ function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
               accessibilityLabel={options.tabBarAccessibilityLabel}
               onPress={onPress}
               hitSlop={8}
-              style={({ pressed }) => [styles.tabItem, pressed && styles.tabPressed]}
+              style={({ pressed: isPressed }) => [styles.tabItem, isPressed && styles.tabPressed]}
             >
               <View style={[styles.iconWrap, focused && styles.iconWrapFocused]}>
                 <AppIcon
                   name={tabIconMap[key]}
-                  size={focused ? 23 : 21}
+                  size={focused ? layout.tabs.iconActive : layout.tabs.icon}
                   active={focused}
-                  tintColor={focused ? undefined : colors.mutedText}
+                  tintColor={focused ? undefined : colors.textSecondary}
                 />
               </View>
             </Pressable>
           );
         })}
       </View>
-      <AppIcon name="chevronDown" size={18} tintColor={colors.text} style={styles.chevron} />
+      <AppIcon
+        name="chevronDown"
+        size={layout.tabs.chevronSize}
+        tintColor={colors.textPrimary}
+        style={styles.chevron}
+      />
     </View>
   );
 }
@@ -87,9 +92,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pill: {
-    width: layout.tabBarWidth,
-    height: layout.tabBarHeight,
-    borderRadius: radius.pill,
+    width: tabBarWidth,
+    height: layout.tabs.height,
+    borderRadius: layout.buttons.radius,
     backgroundColor: colors.nav,
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -103,27 +108,27 @@ const styles = StyleSheet.create({
     overflow: 'visible',
   },
   tabPressed: {
-    opacity: 0.88,
-    transform: [{ scale: 0.98 }],
+    opacity: pressed.opacityMedium,
+    transform: [{ scale: pressed.scaleMedium }],
   },
   iconWrap: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
+    width: layout.tabs.iconWrap,
+    height: layout.tabs.iconWrap,
+    borderRadius: layout.tabs.iconWrap / 2,
     alignItems: 'center',
     justifyContent: 'center',
   },
   iconWrapFocused: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    marginTop: -20,
+    width: layout.tabs.activeCircle,
+    height: layout.tabs.activeCircle,
+    borderRadius: layout.tabs.activeCircle / 2,
+    marginTop: layout.tabs.activeLift,
     backgroundColor: colors.accent,
-    borderWidth: 2,
+    borderWidth: layout.tabs.activeCircleBorderWidth,
     borderColor: colors.border,
   },
   chevron: {
-    marginTop: 6,
+    marginTop: layout.tabs.chevronGap,
     opacity: 0.95,
   },
 });

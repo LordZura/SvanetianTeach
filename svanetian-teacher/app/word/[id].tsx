@@ -4,7 +4,7 @@ import AppIcon from '@/components/AppIcon';
 import AppLogo from '@/components/AppLogo';
 import Screen from '@/components/Screen';
 import { layout } from '@/constants/layout';
-import { colors, radius } from '@/constants/theme';
+import { colors } from '@/constants/theme';
 import { MOCK_WORDS } from '@/types/word';
 
 export default function WordDetailScreen() {
@@ -17,7 +17,7 @@ export default function WordDetailScreen() {
       <View style={styles.topRow}>
         <AppLogo compact />
         <Pressable onPress={() => console.log('search placeholder')} style={styles.iconBtn}>
-          <AppIcon name="search" size={19} />
+          <AppIcon name="search" size={layout.header.searchIcon - 1} />
         </Pressable>
       </View>
 
@@ -41,7 +41,7 @@ export default function WordDetailScreen() {
         <View style={styles.footerRow}>
           <Text style={styles.footerText}>სიტყვის წარმოთქმა</Text>
           <Pressable onPress={() => console.log('mic placeholder', activeWord.id)} style={styles.micBtn}>
-            <AppIcon name="mic" size={15} />
+            <AppIcon name="mic" size={layout.detail.micIcon} />
           </Pressable>
         </View>
       </View>
@@ -51,79 +51,78 @@ export default function WordDetailScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: layout.horizontalPadding,
-    paddingTop: 8,
-    paddingBottom: 24,
+    paddingTop: layout.header.topGap,
+    paddingBottom: layout.screen.formVerticalPadding,
   },
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: layout.header.bottomGap,
   },
   iconBtn: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: layout.header.searchCircle,
+    height: layout.header.searchCircle,
+    borderRadius: layout.header.searchCircle / 2,
     backgroundColor: colors.accent,
     borderColor: colors.border,
-    borderWidth: 2,
+    borderWidth: layout.header.searchBorderWidth,
     alignItems: 'center',
     justifyContent: 'center',
   },
   card: {
     flex: 1,
     backgroundColor: colors.panel,
-    borderRadius: 24,
-    paddingHorizontal: 18,
-    paddingVertical: 16,
-    minHeight: 430,
+    borderRadius: layout.detail.cardRadius,
+    paddingHorizontal: layout.detail.cardPaddingX,
+    paddingVertical: layout.detail.cardPaddingY,
+    minHeight: layout.detail.cardMinHeight,
   },
   fallback: {
-    color: colors.mutedText,
-    fontSize: 12,
-    marginBottom: 6,
+    color: colors.textSecondary,
+    fontSize: layout.detail.fallbackFont,
+    marginBottom: layout.detail.fallbackBottomGap,
   },
   wordRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    minHeight: 46,
+    minHeight: layout.detail.topRowHeight,
   },
   word: {
     flex: 1,
-    color: colors.text,
+    color: colors.textPrimary,
     fontWeight: '700',
     fontSize: 14,
   },
   verticalDivider: {
-    width: 2,
-    height: 33,
+    width: layout.detail.dividerWidth,
+    height: layout.detail.verticalDividerHeight,
     backgroundColor: colors.border,
-    marginHorizontal: 10,
+    marginHorizontal: layout.detail.dividerGap,
   },
   translation: {
     flex: 1,
-    color: colors.text,
+    color: colors.textPrimary,
     textAlign: 'right',
     fontWeight: '700',
     fontSize: 14,
   },
   horizontalDivider: {
-    marginTop: 8,
-    marginBottom: 14,
-    borderBottomWidth: 2,
+    marginTop: layout.detail.horizontalDividerTop,
+    marginBottom: layout.detail.horizontalDividerBottom,
+    borderBottomWidth: layout.detail.dividerWidth,
     borderBottomColor: colors.border,
   },
   desc: {
-    color: colors.text,
-    fontSize: 15,
-    lineHeight: 23,
+    color: colors.textPrimary,
+    fontSize: layout.detail.descFont,
+    lineHeight: layout.detail.descLineHeight,
   },
   bullets: {
-    color: colors.text,
-    fontSize: 18,
-    lineHeight: 30,
-    marginTop: 8,
+    color: colors.textPrimary,
+    fontSize: layout.detail.bulletsFont,
+    lineHeight: layout.detail.bulletsLineHeight,
+    marginTop: layout.detail.bulletsTopGap,
     flex: 1,
   },
   footerRow: {
@@ -132,13 +131,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   footerText: {
-    color: colors.text,
-    fontSize: 13,
+    color: colors.textPrimary,
+    fontSize: layout.detail.footerFont,
   },
   micBtn: {
-    width: 38,
-    height: 38,
-    borderRadius: radius.pill,
+    width: layout.detail.micSize,
+    height: layout.detail.micSize,
+    borderRadius: layout.buttons.radius,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.accent,

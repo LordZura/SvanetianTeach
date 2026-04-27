@@ -7,7 +7,8 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import { colors, radius } from '@/constants/theme';
+import { layout } from '@/constants/layout';
+import { colors } from '@/constants/theme';
 
 type AppInputProps = TextInputProps & {
   leftIcon?: ReactNode;
@@ -29,7 +30,7 @@ export default function AppInput({
       <TextInput
         {...props}
         style={[styles.input, style]}
-        placeholderTextColor={placeholderTextColor ?? '#737882'}
+        placeholderTextColor={placeholderTextColor ?? colors.dim}
       />
       {rightIcon}
     </View>
@@ -39,18 +40,18 @@ export default function AppInput({
 const styles = StyleSheet.create({
   wrap: {
     width: '100%',
-    minHeight: 40,
+    minHeight: layout.inputs.height,
     backgroundColor: colors.input,
-    borderRadius: radius.pill,
-    paddingHorizontal: 14,
+    borderRadius: layout.inputs.radius,
+    paddingHorizontal: layout.inputs.paddingX,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: layout.inputs.iconGap,
   },
   input: {
     flex: 1,
-    height: 40,
-    color: '#2B2B31',
-    fontSize: 14,
+    height: layout.inputs.height,
+    color: colors.textInput,
+    fontSize: layout.inputs.font,
   },
 });

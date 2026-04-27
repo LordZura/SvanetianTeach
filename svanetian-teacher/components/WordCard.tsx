@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { layout } from '@/constants/layout';
-import { colors, radius } from '@/constants/theme';
+import { colors, pressed } from '@/constants/theme';
 import type { Word } from '@/types/word';
 import AppIcon from './AppIcon';
 
@@ -13,10 +13,10 @@ export default function WordCard({ item, onPress }: WordCardProps) {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [styles.row, pressed && styles.pressed]}
+      style={({ pressed: isPressed }) => [styles.row, isPressed && styles.pressed]}
     >
       <Text style={styles.word}>{item.svan}</Text>
-      <AppIcon name="arrowRight" size={20} />
+      <AppIcon name="arrowRight" size={layout.home.arrowIcon} />
       <Text style={styles.translation}>{item.translation}</Text>
     </Pressable>
   );
@@ -25,28 +25,28 @@ export default function WordCard({ item, onPress }: WordCardProps) {
 const styles = StyleSheet.create({
   row: {
     backgroundColor: colors.panel,
-    borderRadius: radius.md,
-    paddingHorizontal: 14,
-    height: layout.rowHeight,
+    borderRadius: layout.lexicon.rowRadius,
+    paddingHorizontal: layout.lexicon.rowPaddingX,
+    height: layout.lexicon.rowHeight,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   pressed: {
-    opacity: 0.9,
-    transform: [{ scale: 0.99 }],
+    opacity: pressed.opacitySoft,
+    transform: [{ scale: pressed.scaleSoft }],
   },
   word: {
-    width: '40%',
-    color: colors.text,
+    width: layout.lexicon.rowWordWidthPercent,
+    color: colors.textPrimary,
     fontWeight: '600',
-    fontSize: 13,
+    fontSize: layout.lexicon.rowFont,
   },
   translation: {
-    width: '40%',
+    width: layout.lexicon.rowWordWidthPercent,
     textAlign: 'right',
-    color: colors.text,
+    color: colors.textPrimary,
     fontWeight: '600',
-    fontSize: 13,
+    fontSize: layout.lexicon.rowFont,
   },
 });

@@ -4,12 +4,12 @@ import AppInput from '@/components/AppInput';
 import AppLogo from '@/components/AppLogo';
 import FormCard from '@/components/FormCard';
 import Screen from '@/components/Screen';
-import { spacing } from '@/constants/theme';
+import { layout } from '@/constants/layout';
 
 export default function SubmitScreen() {
   return (
     <Screen scroll keyboardAware contentStyle={styles.container}>
-      <AppLogo size={58} />
+      <AppLogo size={layout.logo.auth} />
       <FormCard title="წარდგენა">
         <AppInput placeholder="სვანური სიტყვა" />
         <AppInput placeholder="თარგმანი" />
@@ -27,11 +27,11 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.lg,
-    paddingVertical: 24,
+    gap: layout.screen.paddingX,
+    paddingVertical: layout.screen.formVerticalPadding,
   },
   buttonWrap: {
     alignItems: 'center',
-    marginTop: spacing.sm,
+    marginTop: layout.forms.buttonTopGap,
   },
 });

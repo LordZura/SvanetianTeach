@@ -4,23 +4,23 @@ import AppIcon from '@/components/AppIcon';
 import AppLogo from '@/components/AppLogo';
 import Screen from '@/components/Screen';
 import { layout } from '@/constants/layout';
-import { colors, radius } from '@/constants/theme';
+import { colors, pressed } from '@/constants/theme';
 
 export default function HomeScreen() {
   return (
     <Screen contentStyle={styles.container}>
       <View style={styles.hero}>
-        <AppLogo size={58} />
+        <AppLogo size={layout.logo.home} />
         <Text style={styles.title}>{'მე შენ გასწავლი\nსვანურს'}</Text>
       </View>
 
       <Pressable
         onPress={() => router.push('/lexicon')}
-        style={({ pressed }) => [styles.searchPill, pressed && styles.pressed]}
+        style={({ pressed: isPressed }) => [styles.searchPill, isPressed && styles.pressed]}
       >
         <Text style={styles.searchText}>დაწერე აქაური...</Text>
         <View style={styles.arrowWrap}>
-          <AppIcon name="arrowRight" size={16} />
+          <AppIcon name="arrowRight" size={layout.home.arrowIcon} />
         </View>
       </Pressable>
     </Screen>
@@ -29,50 +29,49 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: layout.horizontalPadding,
     justifyContent: 'space-between',
-    paddingBottom: layout.tabBarClearance,
+    paddingBottom: layout.screen.bottomNavSpace,
   },
   hero: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 12,
-    marginTop: 20,
+    gap: layout.home.heroGap,
+    marginTop: layout.home.heroTopGap,
   },
   title: {
-    color: colors.text,
-    fontSize: 40,
+    color: colors.textPrimary,
+    fontSize: layout.home.titleFont,
     textAlign: 'center',
-    lineHeight: 48,
+    lineHeight: layout.home.titleLineHeight,
     fontWeight: '700',
-    maxWidth: 300,
+    maxWidth: layout.home.titleMaxWidth,
   },
   searchPill: {
     alignSelf: 'center',
-    width: '96%',
-    maxWidth: 360,
+    width: `${layout.home.searchWidthPercent * 100}%`,
+    maxWidth: layout.home.searchMaxWidth,
     backgroundColor: colors.card,
-    borderRadius: radius.pill,
-    height: 40,
-    paddingHorizontal: 14,
-    marginBottom: 10,
+    borderRadius: layout.inputs.radius,
+    height: layout.home.searchHeight,
+    paddingHorizontal: layout.home.searchPaddingX,
+    marginBottom: layout.home.searchBottomGap,
     flexDirection: 'row',
     alignItems: 'center',
   },
   pressed: {
-    opacity: 0.9,
-    transform: [{ scale: 0.99 }],
+    opacity: pressed.opacitySoft,
+    transform: [{ scale: pressed.scaleSoft }],
   },
   searchText: {
     flex: 1,
-    color: '#9EA4B0',
-    fontSize: 13,
+    color: colors.textMuted,
+    fontSize: layout.home.searchTextFont,
   },
   arrowWrap: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+    width: layout.home.arrowWrap,
+    height: layout.home.arrowWrap,
+    borderRadius: layout.home.arrowWrap / 2,
     alignItems: 'center',
     justifyContent: 'center',
   },

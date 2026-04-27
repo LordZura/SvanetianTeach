@@ -5,13 +5,13 @@ import AppInput from '@/components/AppInput';
 import AppLogo from '@/components/AppLogo';
 import FormCard from '@/components/FormCard';
 import Screen from '@/components/Screen';
-import { spacing } from '@/constants/theme';
+import { layout } from '@/constants/layout';
 
 export default function LoginScreen() {
   return (
     <Screen scroll keyboardAware contentStyle={styles.container}>
       <View style={styles.logoWrap}>
-        <AppLogo size={58} />
+        <AppLogo size={layout.logo.auth} />
       </View>
 
       <FormCard title="შესვლა">
@@ -31,14 +31,14 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.lg,
-    paddingVertical: 24,
+    gap: layout.screen.paddingX,
+    paddingVertical: layout.screen.formVerticalPadding,
   },
   logoWrap: {
-    marginTop: 8,
+    marginTop: layout.header.topGap,
   },
   buttonWrap: {
-    marginTop: spacing.sm,
+    marginTop: layout.forms.buttonTopGap,
     alignItems: 'center',
   },
 });

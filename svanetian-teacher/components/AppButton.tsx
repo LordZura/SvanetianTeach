@@ -1,5 +1,6 @@
 import { Pressable, StyleProp, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native';
-import { colors, radius } from '@/constants/theme';
+import { layout } from '@/constants/layout';
+import { colors, pressed } from '@/constants/theme';
 
 type AppButtonProps = {
   title: string;
@@ -23,11 +24,11 @@ export default function AppButton({
       hitSlop={8}
       disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => [
+      style={({ pressed: isPressed }) => [
         styles.button,
         compact ? styles.compact : styles.normal,
         disabled && styles.disabled,
-        pressed && !disabled && styles.pressed,
+        isPressed && !disabled && styles.pressed,
         style,
       ]}
     >
@@ -39,32 +40,32 @@ export default function AppButton({
 const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.accent,
-    borderRadius: radius.pill,
+    borderRadius: layout.buttons.radius,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: layout.buttons.paddingX,
   },
   normal: {
-    height: 48,
-    minWidth: 132,
+    height: layout.buttons.normalHeight,
+    minWidth: layout.buttons.normalMinWidth,
   },
   compact: {
-    height: 40,
-    minWidth: 110,
+    height: layout.buttons.compactHeight,
+    minWidth: layout.buttons.compactMinWidth,
   },
   pressed: {
-    opacity: 0.86,
-    transform: [{ scale: 0.98 }],
+    opacity: pressed.opacityStrong,
+    transform: [{ scale: pressed.scaleMedium }],
   },
   disabled: {
     opacity: 0.6,
   },
   title: {
-    color: colors.text,
+    color: colors.textPrimary,
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: layout.buttons.titleFont,
   },
   compactTitle: {
-    fontSize: 14,
+    fontSize: layout.buttons.compactTitleFont,
   },
 });
